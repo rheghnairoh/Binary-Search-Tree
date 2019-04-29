@@ -19,19 +19,23 @@ class BinaryTree {
   Node *root_;
   std::vector<int> data_;
   // private methods
-  Node *makeTree(const int);
-  void setLeft(Node *, const int);
-  void setRight(Node *, const int);
-  Node *insert(Node *, const int);  // recursive method
-  void inorder(Node *);
-  Node *free(Node *);
-  Node *getItemNode(const int);
-  Node *getPreviousNode(const int);
-  int depth(Node *);
-  void sortVectorItems();
-  bool removeByMerging(Node *);
-  Node *getMinNode(Node *);
-  Node *removeRecursive(Node *, int);
+  Node *makeTree(const int);           // make a node
+  void setLeft(Node *, const int);     // set item to the left of given node
+  void setRight(Node *, const int);    // set item to the right of given node
+  Node *insert(Node *, const int);     // recursive method
+  void inorder(Node *);                // recursive inorder traversal helper
+  Node *free(Node *);                  // delete a node, recursively
+  Node *getItemNode(const int);        // get the node of an item
+  Node *getPreviousNode(const int);    // get the previous node of an item
+  int depth(Node *);                   // depth or height of tree
+  void sortVectorItems();              // sorting items before balancing
+  bool removeByMerging(Node *);        // remove item by merging
+  Node *getMinNode(Node *);            // minimum node of the tree
+  Node *removeRecursive(Node *, int);  // remove item recursive way
+  void morrisInorder(Node *);          // morris inorder traversal
+  int balanceFactor(Node *);           // balance factor of a node
+  Node *rightRotation(Node *, Node *, Node *);
+  Node *leftRotation(Node *, Node *, Node *);
 
  public:
   BinaryTree();
@@ -41,12 +45,14 @@ class BinaryTree {
   void traverseIterative();
   void insertRandomIterative(const int);
   void insertRandom(const int);
-  // default M - delete by Merging, R for recursive delete
+  // default M - delete by Merging = M, R for recursive deletion
   bool deleteItem(const int, const char = 'M');
   bool deleteRandom(const int, const char = 'M');
   void vectorInitialisation(std::vector<int>, int, int);
   void balanceTree();
   int height();
+  void morrisInorderTraversal();
+  void createBackbone();
   ~BinaryTree();
 };
 
@@ -183,6 +189,48 @@ Node *BinaryTree::removeRecursive(Node *p, const int x) {
   }
   return p;
 }
+void BinaryTree::morrisInorder(Node *root) {
+  Node *p = root, *tmp;
+  while (p != nullptr) {
+    if (p->left == nullptr) {
+      // std::cout << p->info << "    ";
+      p = p->right;
+    } else {
+      tmp = p->left;
+      while (tmp->right != nullptr && tmp->right != p) tmp = tmp->right;
+      if (tmp->right == nullptr) {
+        tmp->right = p;
+        p = p->left;
+      } else {
+        // std::cout << p->info << "    ";
+        tmp->right = nullptr;
+        p = p->right;
+      }
+    }
+  }
+  std::cout << std::endl;
+}
+int BinaryTree::balanceFactor(Node *p) {
+  return depth(p->left) - depth(p->right);
+}
+Node *BinaryTree::rightRotation(Node *grand_parent, Node *parent, Node *child) {
+  if (parent != root_ && grand_parent != nullptr)
+    grand_parent->right = child;
+  else
+    root_ = child;
+  parent->left = child->right;
+  child->right = parent;
+  return grand_parent;
+}
+Node *BinaryTree::leftRotation(Node *grand_parent, Node *parent, Node *child) {
+  if (parent != root_ && grand_parent != nullptr)
+    grand_parent->right = child;
+  else
+    root_ = child;
+  parent->right = child->left;
+  child->left = parent;
+  return grand_parent;
+}
 
 // PUBLIC METHODS
 BinaryTree::BinaryTree() {
@@ -191,12 +239,10 @@ BinaryTree::BinaryTree() {
 };
 void BinaryTree::insertIterative(const int x) {
   Node *p, *q;
-  // store the items in vector for sorting and deletion purposes
-  data_.push_back(x);
   if (root_ == nullptr)
     root_ = makeTree(x);
   else {
-    p = q = root_;
+    p = q = root_;  // note p follows q
     while (x != p->info && q != nullptr) {
       p = q;
       if (x < p->info)
@@ -206,15 +252,17 @@ void BinaryTree::insertIterative(const int x) {
     }
     if (x == p->info) {
       std::cout << x << " : is a duplicate therefore deprecated!\n";
-      return;
+      return;  // return immediately to avoid pushing data into vector
     } else if (x < p->info)
       setLeft(p, x);
     else
       setRight(p, x);
   }
+  // store the items in vector for sorting, balancing and deletion purposes
+  data_.push_back(x);
 }
 void BinaryTree::insertRecursive(const int x) {
-  // store the items in vector for sorting and deletion purposes
+  // store the items in vector for sorting, balancing and deletion purposes
   data_.push_back(x);
   root_ = insert(root_, x);
 }
@@ -296,6 +344,27 @@ void BinaryTree::balanceTree() {
   vectorInitialisation(data_, 0, data_.size() - 1);
 }
 int BinaryTree::height() { return depth(root_); }
+void BinaryTree::morrisInorderTraversal() { morrisInorder(root_); }
+void BinaryTree::createBackbone() {
+  Node *grand_parent = nullptr, *parent = root_, *child;
+  while (parent != nullptr) {
+    child = parent->left;
+    if (child != nullptr) {
+      grand_parent = rightRotation(grand_parent, parent, child);
+      parent = child;
+    } else {
+      grand_parent = parent;
+      parent = parent->right;
+    }
+  }
+  // traversing
+  Node *current = root_;
+  while (current != nullptr) {
+    // std::cout << current->info << "    ";
+    current = current->right;
+  }
+  std::cout << std::endl;
+}
 BinaryTree::~BinaryTree() { root_ = free(root_); };
 
 #endif

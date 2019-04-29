@@ -15,6 +15,9 @@ Binary Search Tree implementation using C++
 -  Initialise tree from a given vector
 -  Balance the tree using vectors
 -  Get the height of the Tree
+-  Morris Algorithm Inorder  traversal
+-  DSW Backbone traversal
+
 
 
 ## Notes
