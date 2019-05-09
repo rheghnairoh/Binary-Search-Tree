@@ -6,17 +6,18 @@ Binary Search Tree implementation using C++
 
 -  Iterative insertion
 -  Recursive insertion
--  Inorder Recursive traversal
--  Inorder Iterative traversal
+-  Inorder recursive traversal
+-  Inorder iterative traversal
 -  Insert random items recursively
 -  Insert random items iteratively 
 -  Delete an item
 -  Delete an item randomly
 -  Initialise tree from a given vector
 -  Balance the tree using vectors
--  Get the height of the Tree
--  Morris Algorithm Inorder  traversal
--  DSW Backbone traversal
+-  Get the height of the tree
+-  Morris Algorithm inorder traversal
+-  DSW-Backbone inorder traversal
+-  Perfectly balance tree using DSW Algorithm
 
 
 

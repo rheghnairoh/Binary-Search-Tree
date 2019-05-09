@@ -21,7 +21,7 @@ int main(void) {
   std::cout << "Morris Alg Traversal - 1000      : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
   start = clock();
-  tree_1000.createBackbone();
+  tree_1000.backboneTraversal();
   end = clock();
   std::cout << "DSW-Backbone Traversal - 1000    : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
@@ -34,7 +34,7 @@ int main(void) {
   std::cout << "Morris Alg Traversal - 10000     : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
   start = clock();
-  tree_10000.createBackbone();
+  tree_10000.backboneTraversal();
   end = clock();
   std::cout << "DSW-Backbone Traversal - 10000   : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
@@ -47,7 +47,7 @@ int main(void) {
   std::cout << "Morris Alg Traversal - 100000    : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
   start = clock();
-  tree_100000.createBackbone();
+  tree_100000.backboneTraversal();
   end = clock();
   std::cout << "DSW-Backbone Traversal - 100000  : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
@@ -60,7 +60,7 @@ int main(void) {
   std::cout << "Morris Alg Traversal - 500000    : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
   start = clock();
-  tree_500000.createBackbone();
+  tree_500000.backboneTraversal();
   end = clock();
   std::cout << "DSW-Backbone Traversal - 500000  : "
             << static_cast<double>(end - start) / CLOCKS_PER_SEC << std::endl;
